@@ -20,7 +20,7 @@ namespace Wsh.Sound {
     //Assets > Create > 2D > ScriptableObject > SoundConfig 来创建数据对象
     [CreateAssetMenu(fileName = "SoundConfig", menuName = "Custom/ScriptableObject/SoundConfig")]
     public class SoundConfig : ScriptableObject {
-        public List<BgmConfigDataClass> BgmConfigDataClass = new List<BgmConfigDataClass>();
+        public List<BgmConfigDataClass> BgmConfigDefine = new List<BgmConfigDataClass>();
         public List<SfxConfigDataClass> SfxConfigDefine = new List<SfxConfigDataClass>();
     }
 

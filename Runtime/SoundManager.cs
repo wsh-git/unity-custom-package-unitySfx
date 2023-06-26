@@ -9,11 +9,12 @@ namespace Wsh.Sound {
 
         private AudioSource m_audioSource;
         private bool m_enable;
+        private Dictionary<string, BgmConfigDataClass> m_bgmDic;
         private Dictionary<string, SfxConfigDataClass> m_sfxDic;
         private Dictionary<string, float> m_lastPlayTime = new Dictionary<string, float>();
 
         public static SoundManager Instantiate(SoundConfig soundConfig) {
-            GameObject go = new GameObject("__SfxPlayer");
+            GameObject go = new GameObject("__SoundPlayer");
             SoundManager soundManager = go.AddComponent<SoundManager>();
             soundManager.Init(soundConfig);
             return soundManager;
@@ -21,13 +22,20 @@ namespace Wsh.Sound {
 
         private void Init(SoundConfig soundConfig) {
             m_audioSource = gameObject.AddComponent<AudioSource>();
-            UIClickSoundPlayer.SetSfxManager(this);
+            UIClickSoundPlayer.SetSoundManager(this);
             InitSoundConfig(soundConfig);
             DontDestroyOnLoad(gameObject);
         }
 
         private void InitSoundConfig(SoundConfig soundConfig) {
+            m_bgmDic = new Dictionary<string, BgmConfigDataClass>();
             m_sfxDic = new Dictionary<string, SfxConfigDataClass>();
+            for(int i = 0; i < soundConfig.BgmConfigDefine.Count; i++) {
+                var configData = soundConfig.BgmConfigDefine[i];
+                if(!m_bgmDic.ContainsKey(configData.bgmName)) {
+                    m_bgmDic.Add(configData.bgmName, configData);
+                }
+            }
             for(int i = 0; i < soundConfig.SfxConfigDefine.Count; i++) {
                 var configData = soundConfig.SfxConfigDefine[i];
                 if(!m_sfxDic.ContainsKey(configData.sfxName)) {
@@ -37,7 +45,7 @@ namespace Wsh.Sound {
         }
 
         public void Deinit() {
-            UIClickSoundPlayer.SetSfxManager(null);
+            UIClickSoundPlayer.SetSoundManager(null);
             Destroy(gameObject);
         }
 
@@ -46,12 +54,23 @@ namespace Wsh.Sound {
             m_audioSource.mute = !enable;
         }
 
-        public void Play(AudioClip clip) {
+        public void PlayBgm(AudioClip clip) {
+            float volume = 1;
+            if(m_bgmDic.ContainsKey(clip.name)) {
+                volume = m_bgmDic[clip.name].defaultVolume;
+            }
+            m_audioSource.loop = true;
+            m_audioSource.clip = clip;
+            m_audioSource.volume = volume;
+            m_audioSource.Play();
+        }
+
+        public void PlaySfx(AudioClip clip) {
             float volume = 1;
             if(m_sfxDic.ContainsKey(clip.name)) {
                 volume = m_sfxDic[clip.name].defaultVolume;
             }
-            Play(clip, volume);
+            PlaySfx(clip, volume);
         }
 
         private void SetPlayLastTime(string key) {
@@ -63,7 +82,7 @@ namespace Wsh.Sound {
             }
         }
 
-        public void Play(AudioClip clip, float volumeScale) {
+        public void PlaySfx(AudioClip clip, float volumeScale) {
             if(m_sfxDic.ContainsKey(clip.name) && m_lastPlayTime.ContainsKey(clip.name)) {
                 if(m_lastPlayTime[clip.name] + m_sfxDic[clip.name].minimumInterval > Time.realtimeSinceStartup) {
                     return;

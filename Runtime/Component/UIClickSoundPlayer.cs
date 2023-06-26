@@ -13,11 +13,11 @@ namespace Wsh.Sound {
 
         public void OnPointerClick(PointerEventData eventData) {
             if(clip != null && m_soundManager != null) {
-                m_soundManager.Play(clip, volumeScale);
+                m_soundManager.PlaySfx(clip, volumeScale);
             }
         }
 
-        public static void SetSfxManager(SoundManager soundManager) {
+        public static void SetSoundManager(SoundManager soundManager) {
             m_soundManager = soundManager;
         }
 
