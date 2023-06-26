@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Wsh.Sfx {
+namespace Wsh.Sound {
 
-    public class SfxManager : MonoBehaviour {
+    public class SoundManager : MonoBehaviour {
         
         public bool Enable { get { return m_enable; } }
 
@@ -12,24 +12,24 @@ namespace Wsh.Sfx {
         private Dictionary<string, SfxConfigDataClass> m_sfxDic;
         private Dictionary<string, float> m_lastPlayTime = new Dictionary<string, float>();
 
-        public static SfxManager Instantiate(SfxConfig sfxConfig) {
+        public static SoundManager Instantiate(SoundConfig soundConfig) {
             GameObject go = new GameObject("__SfxPlayer");
-            SfxManager sfxManager = go.AddComponent<SfxManager>();
-            sfxManager.Init(sfxConfig);
-            return sfxManager;
+            SoundManager soundManager = go.AddComponent<SoundManager>();
+            soundManager.Init(soundConfig);
+            return soundManager;
         }
 
-        private void Init(SfxConfig sfxConfig) {
+        private void Init(SoundConfig soundConfig) {
             m_audioSource = gameObject.AddComponent<AudioSource>();
             UIClickSoundPlayer.SetSfxManager(this);
-            InitSfxConfig(sfxConfig);
+            InitSoundConfig(soundConfig);
             DontDestroyOnLoad(gameObject);
         }
 
-        private void InitSfxConfig(SfxConfig sfxConfig) {
+        private void InitSoundConfig(SoundConfig soundConfig) {
             m_sfxDic = new Dictionary<string, SfxConfigDataClass>();
-            for(int i = 0; i < sfxConfig.SfxConfigDefine.Count; i++) {
-                var configData = sfxConfig.SfxConfigDefine[i];
+            for(int i = 0; i < soundConfig.SfxConfigDefine.Count; i++) {
+                var configData = soundConfig.SfxConfigDefine[i];
                 if(!m_sfxDic.ContainsKey(configData.sfxName)) {
                     m_sfxDic.Add(configData.sfxName, configData);
                 }
@@ -47,7 +47,11 @@ namespace Wsh.Sfx {
         }
 
         public void Play(AudioClip clip) {
-            Play(clip, 1);
+            float volume = 1;
+            if(m_sfxDic.ContainsKey(clip.name)) {
+                volume = m_sfxDic[clip.name].defaultVolume;
+            }
+            Play(clip, volume);
         }
 
         private void SetPlayLastTime(string key) {

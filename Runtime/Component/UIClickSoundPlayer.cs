@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Wsh.Sfx {
+namespace Wsh.Sound {
 
     public class UIClickSoundPlayer : MonoBehaviour, IPointerClickHandler {
     
@@ -9,16 +9,16 @@ namespace Wsh.Sfx {
         private AudioClip clip;
         [SerializeField]
         private float volumeScale = 1;
-        private static SfxManager m_sfxManager;
+        private static SoundManager m_soundManager;
 
         public void OnPointerClick(PointerEventData eventData) {
-            if(clip != null && m_sfxManager != null) {
-                m_sfxManager.Play(clip, volumeScale);
+            if(clip != null && m_soundManager != null) {
+                m_soundManager.Play(clip, volumeScale);
             }
         }
 
-        public static void SetSfxManager(SfxManager sfxManager) {
-            m_sfxManager = sfxManager;
+        public static void SetSfxManager(SoundManager soundManager) {
+            m_soundManager = soundManager;
         }
 
     }

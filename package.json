@@ -1,14 +1,14 @@
 {
-  "name": "com.wshunity.sfx",
-  "displayName": "Wsh Unity Sfx",
+  "name": "com.wshunity.sound",
+  "displayName": "Wsh Unity Sound",
   "version": "0.0.1",
   "unity": "2017.2",
   "keywords": [
     "View System"
   ],
-  "description": "This is a very base sfx system framework.\n 1、Assets /Create/Custom/ScriptableObject/SfxConfig来创建Sfx配置文件；\n 2、通过SfxManager.Instantiate(SfxConfig)来实例化sfxManager；",
+  "description": "This is a very base sound system framework.\n 1、Assets/Create/Custom/ScriptableObject/SoundConfig来创建BGM/SFX配置文件；\n 2、通过SoundManager.Instantiate(SoundConfig)来实例化soundManager；",
   "repository": {
-    "url": "https://github.com/wsh-git/unity-custom-package-unitySfx.git",
+    "url": "https://github.com/wsh-git/unity-custom-package-unitySound.git",
     "type": "git",
     "revision": "9d824e3aeca574022eff896b9c751097dadd0619"
   },
