@@ -31,14 +31,14 @@ namespace Wsh.Sound {
                 EditorUtility.SetDirty(soundConfig);
             }
 
-            if(GUILayout.Button("Auto Generate (SoundId) CSharp Sprite")) {
+            if(GUILayout.Button("Auto Generate (SoundId) CSharp Script")) {
                 Generate();
             }
         }
 
         private void Generate() {
             StringBuilder stringBuilder = new StringBuilder();
-
+            stringBuilder.Append("//Automatically generated, do not manually modify it!!!\n\n");
             stringBuilder.Append("namespace Wsh.Sound {\n\n");
             stringBuilder.Append("    public class SoundPath {\n");
             
