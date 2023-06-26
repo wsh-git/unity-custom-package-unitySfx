@@ -8,12 +8,16 @@ namespace Wsh.Sound {
         [SerializeField]
         private AudioClip clip;
         [SerializeField]
-        private float volumeScale = 1;
+        private float volumeScale = 0;
         private static SoundManager m_soundManager;
 
         public void OnPointerClick(PointerEventData eventData) {
             if(clip != null && m_soundManager != null) {
-                m_soundManager.PlaySfx(clip, volumeScale);
+                if(volumeScale != 0) {
+                    m_soundManager.PlaySfx(clip, volumeScale);
+                } else {
+                    m_soundManager.PlaySfx(clip);
+                }
             }
         }
 
