@@ -49,9 +49,25 @@ namespace Wsh.Sound {
             Destroy(gameObject);
         }
 
+        private void MuteSound(bool mute) {
+            m_audioSource.mute = mute;
+        }
+
         public void SetEnable(bool enable) {
             m_enable = enable;
-            m_audioSource.mute = !enable;
+            MuteSound(!enable);
+        }
+
+        public void SoundOn() {
+            if(Enable) {
+                MuteSound(false);
+            }
+        }
+
+        public void SoundOff() {
+            if(Enable) {
+                MuteSound(true);
+            }
         }
 
         public void PlayBgm(AudioClip clip) {
